@@ -85,7 +85,7 @@ public class MusicServiceImpl implements MusicService {
     if (nameArr == null || nameArr.length != pairArr.length) {
       throw new IllegalArgumentException("name passed has problem");
     }
-    
+     
     String alistUrlPrefix =
         appConfig.getIpPort() + "/d" + env.getProperty("alist.region." + region);
     for (int i = 0; i < nameArr.length; i++) {
