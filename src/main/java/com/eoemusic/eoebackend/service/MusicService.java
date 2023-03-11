@@ -23,5 +23,5 @@ public interface MusicService {
 
   List<MonthlySelection> getMonthlySelection();
 
-  NameUrlPair[] getPathByNameArr(String[] nameArr, String region);
+  List<NameUrlPair> getPathByNameArr(String[] nameArr, String region);
 }

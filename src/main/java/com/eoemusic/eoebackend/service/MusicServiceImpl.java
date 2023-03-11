@@ -15,6 +15,7 @@ import com.eoemusic.eoebackend.repository.PlaylistRepository;
 import com.eoemusic.eoebackend.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,19 +80,29 @@ public class MusicServiceImpl implements MusicService {
     return musicDao.queryMusic(query);
   }
 
-  public NameUrlPair[] getPathByNameArr(String[] nameArr, String region) {
+  public List<NameUrlPair> getPathByNameArr(String[] nameArr, String region) {
     NameUrlPair[] pairArr = new NameUrlPair[nameArr.length];
-    List<String> pathArr = assetConfigRepository.findPathsByNames(Arrays.asList(nameArr));
+    List<NameUrlPair> pathArr = assetConfigRepository
+        .findNameUrlPairsByNames(Arrays.asList(nameArr));
     if (nameArr == null || nameArr.length != pairArr.length) {
       throw new IllegalArgumentException("name passed has problem");
     }
-     
     String alistUrlPrefix =
         appConfig.getIpPort() + "/d" + env.getProperty("alist.region." + region);
-    for (int i = 0; i < nameArr.length; i++) {
-      pairArr[i] = new NameUrlPair(nameArr[i], alistUrlPrefix + pathArr.get(i));
+    for (int i = 0; i < pathArr.size(); i++) {
+      pathArr.get(i).setUrl(alistUrlPrefix + pathArr.get(i).getUrl());
     }
-    return pairArr;
+    // need to align with order of nameArr
+    Map<String, Integer> map = new HashMap<>();
+    for (int i = 0; i < nameArr.length; i++) {
+      map.put(nameArr[i], i);
+    }
+    Collections.sort(pathArr, (n1, n2) -> {
+      int i1 = map.get(n1.getName());
+      int i2 = map.get(n2.getName());
+      return Integer.compare(i1, i2);
+    });
+    return pathArr;
   }
 
   public List<MonthlySelection> getMonthlySelection() {

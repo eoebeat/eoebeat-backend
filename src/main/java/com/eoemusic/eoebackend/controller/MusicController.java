@@ -61,8 +61,9 @@ public class MusicController {
   }
 
   @PostMapping("/asset")
-  public NameUrlPair[] getPathByName(@RequestBody String[] nameArr,  @RequestHeader(value = "region") String region) {
-    if(log.isDebugEnabled()){
+  public List<NameUrlPair> getPathByName(@RequestBody String[] nameArr,
+      @RequestHeader(value = "region") String region) {
+    if (log.isDebugEnabled()) {
       String json = JSON.toJson(nameArr);
       log.info("search asset images, param: {}", json);
       log.info("region is: {}", region);
