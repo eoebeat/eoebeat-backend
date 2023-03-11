@@ -89,13 +89,11 @@ public class MusicServiceImpl implements MusicService {
     }
     String alistUrlPrefix =
         appConfig.getIpPort() + "/d" + env.getProperty("alist.region." + region);
-    for (int i = 0; i < pathArr.size(); i++) {
-      pathArr.get(i).setUrl(alistUrlPrefix + pathArr.get(i).getUrl());
-    }
     // need to align with order of nameArr
     Map<String, Integer> map = new HashMap<>();
     for (int i = 0; i < nameArr.length; i++) {
       map.put(nameArr[i], i);
+      pathArr.get(i).setUrl(alistUrlPrefix + pathArr.get(i).getUrl());
     }
     Collections.sort(pathArr, (n1, n2) -> {
       int i1 = map.get(n1.getName());
