@@ -76,7 +76,8 @@ public class OpsController {
           new StringBuilder().append(csvDatum.get(SyncCSVEnum.SONG_DATE.getColumnNum()))
               .append(" ")
               .append(singer).append(" ")
-              .append(csvDatum.get(SyncCSVEnum.SONG_NAME.getColumnNum()))
+              .append(csvDatum.get(SyncCSVEnum.SONG_NAME.getColumnNum())).append(" (")
+              .append(csvDatum.get(SyncCSVEnum.SONG_NAME_ALIAS.getColumnNum())).append(")")
               .append(versionRemark).toString());
       String musicID = csvDatum.get(SyncCSVEnum.ID.getColumnNum()).replaceAll("[^A-Za-z0-9]", "");
       Music musicDB = allMusicDB.stream().filter(m -> m.getId().equals(musicID)).findFirst()
