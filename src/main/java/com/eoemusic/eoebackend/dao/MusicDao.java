@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.util.UriUtils;
 
 /**
  * @description: some desc
@@ -105,6 +106,8 @@ public class MusicDao {
       res.setAudioUrl(new StringBuilder(alistUrlPrefix).append(data.get("Alist_audio_path"))
           .append(data.get("partial_url")).append(".").append(data.get("audio_media_type"))
           .toString());
+      String decodedUrl = UriUtils.decode(res.getAudioUrl(), "UTF-8");
+      System.out.println(decodedUrl);
       res.setCoverUrl(new StringBuilder(alistUrlPrefix).append(data.get("Alist_cover_path"))
           .append(data.get("partial_url")).append(".").append(data.get("cover_media_type"))
           .toString());

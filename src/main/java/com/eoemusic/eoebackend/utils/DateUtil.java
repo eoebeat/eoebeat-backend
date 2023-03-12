@@ -49,7 +49,7 @@ public class DateUtil {
         resourceDateDash);
   }
 
-  public static String parseStringToString(ThreadLocal<DateFormat> threadlocalFormatFrom,
+  private static String parseStringToString(ThreadLocal<DateFormat> threadlocalFormatFrom,
       ThreadLocal<DateFormat> threadlocalFormatTo, String resourceDate) {
     Date date = null;
     try {

@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -69,15 +70,22 @@ public class OpsController {
       if (!isJoint(singerArr)) {
         singer = "L";
       }
-      String versionRemark =
-          csvDatum.get(SyncCSVEnum.VERSION_REMARK.getColumnNum()).length() == 0 ? ""
-              : " 【" + csvDatum.get(SyncCSVEnum.VERSION_REMARK.getColumnNum()) + "】";
+      String versionRemark = Optional
+          .ofNullable(csvDatum.get(SyncCSVEnum.VERSION_REMARK.getColumnNum()))
+          .filter(s -> !s.isEmpty())
+          .map(s -> "【" + s + "】")
+          .orElse("");
+      String songNameAlias = Optional
+          .ofNullable(csvDatum.get(SyncCSVEnum.SONG_NAME_ALIAS.getColumnNum()))
+          .filter(alias -> !alias.isEmpty())
+          .map(alias -> "(" + alias + ")")
+          .orElse("");
       String partialUrl = "/" + encodeValue(
           new StringBuilder().append(csvDatum.get(SyncCSVEnum.SONG_DATE.getColumnNum()))
               .append(" ")
               .append(singer).append(" ")
-              .append(csvDatum.get(SyncCSVEnum.SONG_NAME.getColumnNum())).append(" (")
-              .append(csvDatum.get(SyncCSVEnum.SONG_NAME_ALIAS.getColumnNum())).append(")")
+              .append(csvDatum.get(SyncCSVEnum.SONG_NAME.getColumnNum()))
+              .append(songNameAlias)
               .append(versionRemark).toString());
       String musicID = csvDatum.get(SyncCSVEnum.ID.getColumnNum()).replaceAll("[^A-Za-z0-9]", "");
       Music musicDB = allMusicDB.stream().filter(m -> m.getId().equals(musicID)).findFirst()
@@ -117,6 +125,7 @@ public class OpsController {
     return ResponseEntity.status(HttpStatus.OK).body("successfully sync");
   }
 
+ 
   private boolean isJoint(String[] singers) {
     for (String singer : singers) {
       if (!Constants.eoeSinger.contains(singer)) {
