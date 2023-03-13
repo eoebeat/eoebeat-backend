@@ -12,8 +12,7 @@ import lombok.Getter;
 public enum SyncCSVEnum {
   ID(0), UPDATE_TIME(1), SONG_NAME(2),
   SONG_NAME_ALIAS(3), SINGER(4), SONG_DATE(5), VERSION_REMARK(6), AUDIO_MEDIA_TYPE(7), DURATION(
-      8), SONG_LANGUAGE(9), SONG_STATUS(
-      10);
+      8), SONG_LANGUAGE(9), SONG_STATUS(10), HAS_COVER(11);
   private int columnNum;
 
   SyncCSVEnum(int columnNum) {

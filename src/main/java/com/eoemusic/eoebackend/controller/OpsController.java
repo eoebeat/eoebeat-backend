@@ -67,7 +67,7 @@ public class OpsController {
 
       String[] singerArr = csvDatum.get(SyncCSVEnum.SINGER.getColumnNum()).split(" ");
       String singer = csvDatum.get(SyncCSVEnum.SINGER.getColumnNum()).replaceAll("\\s+", "");
-      if (!isJoint(singerArr)) {
+      if (isJoint(singerArr)) {
         singer = "L";
       }
       String versionRemark = Optional
@@ -95,7 +95,7 @@ public class OpsController {
       music.setUpdateTime(Long.valueOf(csvDatum.get(SyncCSVEnum.UPDATE_TIME.getColumnNum())));
       music.setSongName(csvDatum.get(SyncCSVEnum.SONG_NAME.getColumnNum()));
       music.setSongNameAlias(csvDatum.get(SyncCSVEnum.SONG_NAME_ALIAS.getColumnNum()));
-      music.setSinger(csvDatum.get(SyncCSVEnum.SINGER.getColumnNum()));
+      music.setSinger(singer);
       music.setSongDate(csvDatum.get(SyncCSVEnum.SONG_DATE.getColumnNum()));
       csvSongDateSet.add(music.getSongDate().substring(0, 7));
       music.setVersionRemark(csvDatum.get(SyncCSVEnum.VERSION_REMARK.getColumnNum()));
@@ -104,6 +104,7 @@ public class OpsController {
       music.setDuration(Integer.valueOf(csvDatum.get(SyncCSVEnum.DURATION.getColumnNum())));
       music.setSongLanguage(csvDatum.get(SyncCSVEnum.SONG_LANGUAGE.getColumnNum()));
       music.setSongStatus(csvDatum.get(SyncCSVEnum.SONG_STATUS.getColumnNum()));
+      music.setHasCover("1".equals(csvDatum.get(SyncCSVEnum.HAS_COVER.getColumnNum())));
       music.setAlistAudioPath(alistAudioPath);
       music.setAlistCoverPath(alistCoverPath);
       music.setPartialUrl(partialUrl);
@@ -125,14 +126,14 @@ public class OpsController {
     return ResponseEntity.status(HttpStatus.OK).body("successfully sync");
   }
 
- 
+
   private boolean isJoint(String[] singers) {
     for (String singer : singers) {
-      if (!Constants.eoeSinger.contains(singer)) {
-        return false;
+      if (!Constants.eoeSinger.contains(singer) && !"EOE".equals(singer)) {
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
 

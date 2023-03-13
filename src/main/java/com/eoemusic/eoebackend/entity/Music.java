@@ -107,6 +107,9 @@ public class Music implements Serializable {
   @Column(name = "hit_count")
   private Integer hitCount;
 
+  @Column(name = "has_cover")
+  private Boolean hasCover;
+  
   /**
    * 歌曲入库时间
    */
