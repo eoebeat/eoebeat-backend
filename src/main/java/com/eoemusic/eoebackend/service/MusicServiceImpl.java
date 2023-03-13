@@ -87,8 +87,11 @@ public class MusicServiceImpl implements MusicService {
     if (nameArr == null || nameArr.length != pairArr.length) {
       throw new IllegalArgumentException("name passed has problem");
     }
-    String alistUrlPrefix =
-        appConfig.getIpPort() + "/d" + env.getProperty("alist.region." + region);
+    String alistUrlPrefix = new StringBuilder()
+        .append(appConfig.getIpPort())
+        .append("/d")
+        .append(env.getProperty("alist.region." + region))
+        .toString();
     // need to align with order of nameArr
     Map<String, Integer> map = new HashMap<>();
     for (int i = 0; i < nameArr.length; i++) {
@@ -103,12 +106,16 @@ public class MusicServiceImpl implements MusicService {
     return pathArr;
   }
 
-  public List<MonthlySelection> getMonthlySelection() {
+  public List<MonthlySelection> getMonthlySelection(String region) {
+    String alistUrlPrefix = new StringBuilder()
+        .append(appConfig.getIpPort())
+        .append("/d")
+        .append(env.getProperty("alist.region." + region))
+        .toString();
     List<MonthlySelection> monthlySelectionList = monthlySelectionRepository
         .findAllByOrderBySearchLabelDesc();
     monthlySelectionList.forEach(monthlySelection -> {
-      monthlySelection
-          .setCoverPath(appConfig.getIpPort() + "/d" + monthlySelection.getCoverPath());
+      monthlySelection.setCoverPath(alistUrlPrefix + monthlySelection.getCoverPath());
     });
     return monthlySelectionList;
   }

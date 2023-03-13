@@ -73,8 +73,9 @@ public class MusicController {
 
 
   @GetMapping("/monthlyCollection")
-  public List<MonthlySelection> getMonthlySelection() {
-    return musicService.getMonthlySelection();
+  public List<MonthlySelection> getMonthlySelection(
+      @RequestHeader(value = "region") String region) {
+    return musicService.getMonthlySelection(region);
   }
 
 

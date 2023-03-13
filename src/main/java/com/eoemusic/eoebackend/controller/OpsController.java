@@ -115,14 +115,17 @@ public class OpsController {
     // add to monthly_selection table only when there is a song at that month but no in the table
     List<String> searchLabelList = monthlySelectionRepository.findAllSearchLabel();
     csvSongDateSet.removeAll(searchLabelList);
+    List<MonthlySelection> monthlySelectionList = new ArrayList<>();
     for (String newSongDate : csvSongDateSet) {
       MonthlySelection monthlySelection = new MonthlySelection();
       monthlySelection.setCoverPath(appConfig.getMonthlySelectionCoverPath());
       monthlySelection.setDescription("");
       monthlySelection.setSearchLabel(newSongDate);
       monthlySelection.setName(DateUtil.parseDateDotToChi(newSongDate));
-      monthlySelectionRepository.save(monthlySelection);
+      monthlySelectionList.add(monthlySelection);
     }
+    monthlySelectionRepository.saveAll(monthlySelectionList);
+
     return ResponseEntity.status(HttpStatus.OK).body("successfully sync");
   }
 

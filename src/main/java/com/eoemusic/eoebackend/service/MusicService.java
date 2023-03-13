@@ -21,7 +21,7 @@ public interface MusicService {
   QueryResult search(QueryRequest query) throws Exception;
 
 
-  List<MonthlySelection> getMonthlySelection();
+  List<MonthlySelection> getMonthlySelection(String region);
 
   List<NameUrlPair> getPathByNameArr(String[] nameArr, String region);
 }
