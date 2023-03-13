@@ -73,7 +73,7 @@ public class OpsController {
       String versionRemark = Optional
           .ofNullable(csvDatum.get(SyncCSVEnum.VERSION_REMARK.getColumnNum()))
           .filter(s -> !s.isEmpty())
-          .map(s -> "【" + s + "】")
+          .map(s -> " 【" + s + "】")
           .orElse("");
       String songNameAlias = Optional
           .ofNullable(csvDatum.get(SyncCSVEnum.SONG_NAME_ALIAS.getColumnNum()))
